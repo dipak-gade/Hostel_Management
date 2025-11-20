@@ -1,0 +1,42 @@
+body {
+	box-sizing: border-box;
+	height: 100%;
+}
+
+html {
+	height: 100%;
+}
+
+.loading-spinner {
+	border: 3px solid #f3f4f6;
+	border-top: 3px solid #3b82f6;
+	border-radius: 50%;
+	width: 20px;
+	height: 20px;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+.toast {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	padding: 12px 24px;
+	border-radius: 8px;
+	color: white;
+	font-weight: 500;
+	z-index: 1000;
+	transform: translateX(100%);
+	transition: transform 0.3s ease;
+}
+
+.toast.show {
+	transform: translateX(0);
+}
+
+.toast.success { background-color: #10b981; }
+.toast.error { background-color: #ef4444; }
