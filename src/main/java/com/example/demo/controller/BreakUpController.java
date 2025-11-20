@@ -35,26 +35,30 @@ import com.example.demo.service.BreakUpService;
 @RestController
 public class BreakUpController {
 
-    @Autowired
-    BreakUpService breakUpService;
-    
-    @GetMapping("breakUp/{userName}/{bedId}/{duration}")
-    public ResponseEntity<?> getBreakUp(
-            @PathVariable String userName, 
-            @PathVariable Integer bedId, 
-            @PathVariable Integer duration) {
-        
-        try {
-            BreakupDTO breakup = breakUpService.getBreakup(userName, bedId, duration);
-            return ResponseEntity.ok(breakup);
-        } catch (Exception e) {
-            // Log the error
-            System.err.println("Error in breakup API: " + e.getMessage());
-            e.printStackTrace();
-            
-            // Return proper error response
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error generating breakup: " + e.getMessage());
-        }
-    }
+	@Autowired
+	BreakUpService breakUpService;
+
+//	@GetMapping("breakUp/{userName}/{bedId}/{duration}")
+//	public ResponseEntity<?> getBreakUp(@PathVariable String userName, @PathVariable Integer bedId, @PathVariable Integer duration) {
+//
+//		try {
+//			BreakupDTO breakup = breakUpService.getBreakup(userName, bedId, duration);
+//			return ResponseEntity.ok(breakup);
+//		} catch (Exception e) {
+//			// Log the error
+//			System.err.println("Error in breakup API: " + e.getMessage());
+//			e.printStackTrace();
+//
+//			// Return proper error response
+//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//					.body("Error generating breakup: " + e.getMessage());
+//		}
+//	}
+
+	@GetMapping("breakUp/{userName}/{bedId}/{duration}")
+	public BreakupDTO getBreakUp(@PathVariable String userName, @PathVariable Integer bedId,
+			@PathVariable Integer duration) {
+
+		return breakUpService.getBreakup(userName, bedId, duration);
+	}
 }
