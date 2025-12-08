@@ -25,55 +25,58 @@ public class BookingServiceImpl implements BookingService {
 	UserRepo userRepo;
 
 	@Override
-	public void createBooking(int userId, int bedId, int finalAmt) {
+	public Booking createBooking(int userId, int bedId, int finalAmt) {
+		try {
+			Bed bed = bedRepo.findById(bedId).orElseThrow(() -> new RuntimeException("Bed not found: " + bedId));
+			User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found: " + userId));
 
-		Bed bed = bedRepo.findById(bedId).get();
-		User user = userRepo.findById(userId).get();
+			Booking booking = new Booking();
+			booking.setUserId(user.getId());
+			booking.setBedId(bed.getId());
+			booking.setOrganizationId(bed.getRoom().getFloor().getBuilding().getHostel().getOrganization().getId());
+			booking.setFinalAmt(finalAmt);
+			booking.setStartDate(LocalDateTime.now());
+			booking.setBookingStatus("IN_PROGRESS");
+			booking.setPaymentStatus("PENDING");
 
-		Booking booking = new Booking();
-		booking.setUserId(user.getId());
-		booking.setBedId(bed.getId());
-		booking.setFinalAmt(finalAmt);
-		booking.setStartDate(LocalDateTime.now());
-		booking.setBookingStatus("IN_PROGRESS");
-		booking.setPaymentStatus("PENDING");
+			return bookingRepo.save(booking);
 
-		bookingRepo.save(booking);
-
+		} catch (Exception e) {
+			e.printStackTrace(); // <-- SHOW THE REAL ERROR
+			throw e; // bubble up
+		}
 	}
 
 	@Override
-	public void updateBooking(int bookingId, long transactionId, boolean success, long orderId) {
-		Booking booking = bookingRepo.findById(bookingId).get();
+	public void updateBooking(int bookingId, String transactionId, boolean success, String orderId) {
+
+		Booking booking = bookingRepo.findById(bookingId).orElseThrow();
+
+		booking.setOrderId(orderId);
+		booking.setTransactionId(transactionId);
+		booking.setPaymentDate(LocalDateTime.now());
+		booking.setEndDate(LocalDateTime.now());
 
 		if (success) {
-			booking.setBookingStatus("Success");
-			booking.setPaymentStatus("Completed");
+			booking.setBookingStatus("SUCCESS");
+			booking.setPaymentStatus("COMPLETED");
 
-			// To asssign the bedid to user
-			Bed bed = bedRepo.findById(booking.getBedId()).get();
-			User user = userRepo.findById(booking.getUserId()).get();
+			// Assign bed to user
+			Bed bed = bedRepo.findById(booking.getBedId()).orElseThrow();
+			User user = userRepo.findById(booking.getUserId()).orElseThrow();
+
 			user.setBed(bed);
-
 			userRepo.save(user);
 
-			// To change the bed status
+			// Mark bed as occupied
 			bed.setStatus("Occupied");
 			bedRepo.save(bed);
 
 		} else {
-			booking.setBookingStatus("Failed");
-			booking.setPaymentStatus("Failed");
+			booking.setBookingStatus("FAILED");
+			booking.setPaymentStatus("FAILED");
 		}
 
-		booking.setOrderId(orderId);
-		booking.setTransactionId(transactionId);
-
-		booking.setPaymentDate(LocalDateTime.now());
-		booking.setEndDate(LocalDateTime.now());
-
 		bookingRepo.save(booking);
-
 	}
-
 }

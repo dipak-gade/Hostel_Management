@@ -21,14 +21,7 @@ public class Organization {
 	private String name;
 	private String email;
 	private String ownerName;
-
-	public String getOwnerName() {
-		return ownerName;
-	}
-
-	public void setOwnerName(String ownerName) {
-		this.ownerName = ownerName;
-	}
+	private String contact;
 
 	@OneToMany(mappedBy = "organization")
 	@JsonIgnore
@@ -66,4 +59,19 @@ public class Organization {
 		this.hostels = hostels;
 	}
 
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getOwnerName() {
+		return ownerName;
+	}
+
+	public void setOwnerName(String ownerName) {
+		this.ownerName = ownerName;
+	}
 }

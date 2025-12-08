@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import com.example.demo.dto.OrganizationDTO;
 import com.example.demo.entity.Hostel;
 import com.example.demo.entity.Organization;
-import com.example.demo.entity.User;
 import com.example.demo.exception.InvalidDataException;
 import com.example.demo.repository.HostelRepo;
 import com.example.demo.repository.OrganizationRepo;
@@ -41,6 +40,8 @@ public class OrganizationServiceImpl implements OrganizationService {
 			organization.setName(organizationDTO.getName());
 			organization.setEmail(organizationDTO.getEmail());
 			organization.setOwnerName(organizationDTO.getOwnerName());
+			organization.setContact(organizationDTO.getContact());
+		
 
 			Organization org = organizationRepo.save(organization);
 
@@ -87,6 +88,7 @@ public class OrganizationServiceImpl implements OrganizationService {
 		existingOrganization.setName(organization.getName());
 		existingOrganization.setEmail(organization.getEmail());
 		existingOrganization.setOwnerName(organization.getOwnerName());
+		existingOrganization.setContact(organization.getContact());
 		
 		organizationRepo.save(existingOrganization);
 

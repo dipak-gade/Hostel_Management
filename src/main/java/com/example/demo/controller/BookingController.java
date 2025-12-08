@@ -1,10 +1,10 @@
 package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.entity.Booking;
@@ -16,17 +16,27 @@ public class BookingController {
 	@Autowired
 	BookingService bookingService;
 
-	@PostMapping("booking/start{userId}/{bedId}/{amount}")
-	public ResponseEntity startBooking(@PathVariable int userId, @PathVariable Integer bedId, @PathVariable int amount) {
+	@PostMapping("booking/start/{userId}/{bedId}/{amount}")
+	public ResponseEntity<?> startBooking(@PathVariable int userId, @PathVariable int bedId, @PathVariable int amount) {
 
-		bookingService.createBooking(userId, bedId, amount);
-		return new ResponseEntity("Booking Started", HttpStatus.CREATED);
+		Booking booking = bookingService.createBooking(userId, bedId, amount);
+
+		// Return bookingId so FE can use it with Razorpay
+		return ResponseEntity.ok(booking);
 	}
 
-	@PostMapping("booking/update/{bookingId}/{transactionId}/{success}/{orderId}")
-	public ResponseEntity updateBooking(@PathVariable int bookingId, @PathVariable int transactionId, boolean success,
-			@PathVariable long orderId) {
-		bookingService.updateBooking(bookingId, transactionId, success, orderId);
-		return new ResponseEntity("Booking completed", HttpStatus.OK);
+	// STEP 4 — UPDATE BOOKING AFTER PAYMENT
+	@PostMapping("booking/update/{bookingId}/{success}/{orderId}")
+	public ResponseEntity<?> updateBooking(@PathVariable int bookingId, @PathVariable boolean success,
+			@PathVariable String orderId, @RequestBody String transactionId // Razorpay payment_id
+	) {
+		try {
+			bookingService.updateBooking(bookingId, transactionId, success, orderId);
+			return ResponseEntity.ok("Booking updated");
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(500).body("Failed to update booking");
+		}
 	}
+
 }

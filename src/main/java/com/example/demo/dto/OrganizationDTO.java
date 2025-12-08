@@ -9,8 +9,17 @@ public class OrganizationDTO {
 	private String name;
 	private String email;
 	private String ownerName;
+	private String contact;
 
 	private Set<Hostel> hostels;
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
 
 	public String getOwnerName() {
 		return ownerName;

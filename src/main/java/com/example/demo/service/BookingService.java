@@ -1,8 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Booking;
+
 public interface BookingService {
 
-	public void createBooking(int userId, int bedId, int finalAmt);
+	public Booking createBooking(int userId, int bedId, int finalAmt);
 
-	public void updateBooking(int bookingId, long transactionId, boolean success, long orderId);
+	public void updateBooking(int bookingId, String transactionId, boolean success, String orderId);
+
 }

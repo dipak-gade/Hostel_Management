@@ -43,10 +43,11 @@ public class FloorServiceImpl implements FloorService {
 		floor.setFloorNo(floorDTO.getFloorNo());
 		floor.setNoOfRooms(floorDTO.getNoOfRooms());
 
-		building.setFloors(building.getFloors() + 1);
+		
 
 		floor.setBuilding(building);
 		floorRepo.save(floor);
+		building.setFloors(building.getFloors() + 1);
 
 	}
 

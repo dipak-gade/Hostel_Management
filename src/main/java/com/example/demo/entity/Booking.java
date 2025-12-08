@@ -2,6 +2,7 @@ package com.example.demo.entity;
 
 import java.time.LocalDateTime;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,16 +17,28 @@ public class Booking {
 
 	private int userId;
 	private int bedId;
+	private int organizationId;
+
 	private int finalAmt;
-	
+
 	private LocalDateTime startDate;
 	private String bookingStatus;
 	private String paymentStatus;
 
-	private long transactionId;
+	private String transactionId;
 	private LocalDateTime endDate;
 	private LocalDateTime paymentDate;
-	private long orderId;
+
+	@Column(nullable = true)
+	private String orderId;
+
+	public int getOrganizationId() {
+		return organizationId;
+	}
+
+	public void setOrganizationId(int organizationId) {
+		this.organizationId = organizationId;
+	}
 
 	public int getId() {
 		return id;
@@ -75,12 +88,12 @@ public class Booking {
 		this.finalAmt = finalAmt;
 	}
 
-	public long getTransactionId() {
+	public String getTransactionId() {
 		return transactionId;
 	}
 
-	public void setTransactionId(long transactionId) {
-		this.transactionId = transactionId;
+	public void setTransactionId(String transactionId2) {
+		this.transactionId = transactionId2;
 	}
 
 	public LocalDateTime getStartDate() {
@@ -107,11 +120,11 @@ public class Booking {
 		this.paymentDate = paymentDate;
 	}
 
-	public long getOrderId() {
+	public String getOrderId() {
 		return orderId;
 	}
 
-	public void setOrderId(long orderId) {
+	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
 

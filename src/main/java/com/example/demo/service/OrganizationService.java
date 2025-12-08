@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.example.demo.dto.OrganizationDTO;
 import com.example.demo.entity.Organization;
-import com.example.demo.entity.User;
 
 public interface OrganizationService {
 
