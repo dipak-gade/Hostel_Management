@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.OrganizationDTO;
+import com.example.demo.dto.OrganizationDto;
 import com.example.demo.entity.Organization;
-import com.example.demo.entity.User;
 import com.example.demo.service.OrganizationService;
 
 @RestController
@@ -24,26 +23,20 @@ public class OrganizationController {
 	@Autowired
 	OrganizationService organizationService;
 
-	@PostMapping("addhostelsWithOrg")
-	public ResponseEntity addHostelsInOrganozation(@RequestBody OrganizationDTO organizationDTO) {
-		organizationService.addHostelsInOrganozation(organizationDTO);
-		return new ResponseEntity("Organization Added", HttpStatus.CREATED);
-	}
-
-	@GetMapping("getAllOrganizations")
-	public List<Organization> getAllOrganization() {
-		return organizationService.getAllOrganizations();
-	}
-
 	@PostMapping("addOrganization")
-	public ResponseEntity addOrganization(@RequestBody Organization organization) {
-		organizationService.addOrganization(organization);
+	public ResponseEntity addOrganization(@RequestBody OrganizationDto organizationDto) {
+		organizationService.addOrganization(organizationDto);
 		return new ResponseEntity("Organization Added", HttpStatus.CREATED);
 	}
 
 	@GetMapping("getOrganizationById/{id}")
-	public Organization getOrganizationById(@PathVariable int id) {
+	public OrganizationDto getOrganizationById(@PathVariable int id) {
 		return organizationService.getOrganizationById(id);
+	}
+
+	@GetMapping("getAllOrganizations")
+	public List<OrganizationDto> getAllOrganization() {
+		return organizationService.getAllOrganizations();
 	}
 
 	@DeleteMapping("deleteOrganizationById/{id}")
@@ -51,11 +44,16 @@ public class OrganizationController {
 		organizationService.deleteOrganizationById(id);
 		return new ResponseEntity("Organization deleted", HttpStatus.OK);
 	}
-	
+
 	@PutMapping("updateOrganizationById/{id}")
-	public ResponseEntity updateOrganizationById(@PathVariable int id,@RequestBody Organization organization) {
-		organizationService.updateOrganizationById(id, organization);
-		return new ResponseEntity("Organization updated",HttpStatus.OK);
+	public ResponseEntity updateOrganizationById(@PathVariable int id, @RequestBody OrganizationDto organizationDto) {
+		organizationService.updateOrganizationById(id, organizationDto);
+		return new ResponseEntity("Organization updated", HttpStatus.OK);
 	}
 
+//	@PostMapping("addhostelsWithOrg")
+//	public ResponseEntity addHostelsInOrganozation(@RequestBody OrganizationDto organizationDto) {
+//		organizationService.addHostelsInOrganozation(organizationDto);
+//		return new ResponseEntity("Organization Added", HttpStatus.CREATED);
+//	}
 }

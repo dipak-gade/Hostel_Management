@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,30 +6,51 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.BedDTO;
+import com.example.demo.dto.BedDto;
 import com.example.demo.entity.Bed;
 import com.example.demo.entity.Building;
 import com.example.demo.entity.Floor;
 import com.example.demo.entity.Hostel;
 import com.example.demo.entity.Room;
-import com.example.demo.repository.BedRepo;
-import com.example.demo.repository.RoomRepo;
+import com.example.demo.repository.BedRepository;
+import com.example.demo.repository.RoomRepository;
+import com.example.demo.service.BedService;
 
 @Service
 public class BedServiceImpl implements BedService {
 
 	@Autowired
-	BedRepo bedRepo;
+	BedRepository bedRepository;
 
 	@Autowired
-	RoomRepo roomRepo;
+	RoomRepository roomRepository;
 
 	@Override
-	public List<BedDTO> getAvailableBedsForTwoSharing(int sharing, int hostelId) {
+	public void addBedWithRoomId(BedDto bedDto) {
+		Room room = roomRepository.findById(bedDto.getRoomId()).get();
 
-		List<Bed> beds = bedRepo.findAvailableBedsOfTwoSharing(sharing, hostelId);
+		Bed bed = new Bed();
+		bed.setBedNo(bedDto.getBedNo());
+		bed.setStatus(bedDto.getStatus());
+		bed.setPrice(bedDto.getPrice());
 
-		List<BedDTO> listOfBed = new ArrayList();
+		bed.setRoom(room);
+
+		bedRepository.save(bed);
+
+	}
+
+	@Override
+	public List<Bed> getAllBeds() {
+		return bedRepository.findAll();
+	}
+
+	@Override
+	public List<BedDto> getAvailableBedsForTwoSharing(int sharing, int hostelId) {
+
+		List<Bed> beds = bedRepository.findAvailableBedsOfTwoSharing(sharing, hostelId);
+
+		List<BedDto> listOfBed = new ArrayList();
 
 		for (Bed b : beds) {
 			Room room = b.getRoom();
@@ -37,7 +58,7 @@ public class BedServiceImpl implements BedService {
 			Building building = floor.getBuilding();
 			Hostel hostel = building.getHostel();
 
-			BedDTO bedDTO = new BedDTO();
+			BedDto bedDTO = new BedDto();
 
 			bedDTO.setBedNo(b.getBedNo());
 			bedDTO.setPrice(b.getPrice());
@@ -55,26 +76,6 @@ public class BedServiceImpl implements BedService {
 
 		}
 		return listOfBed;
-	}
-
-	@Override
-	public void addBedWithRoomId(BedDTO bedDTO) {
-		Room room = roomRepo.findById(bedDTO.getRoomId()).get();
-
-		Bed bed = new Bed();
-		bed.setBedNo(bedDTO.getBedNo());
-		bed.setStatus(bedDTO.getStatus());
-		bed.setPrice(bedDTO.getPrice());
-
-		bed.setRoom(room);
-
-		bedRepo.save(bed);
-
-	}
-
-	@Override
-	public List<Bed> getAllBeds() {
-		return bedRepo.findAll();
 	}
 
 }

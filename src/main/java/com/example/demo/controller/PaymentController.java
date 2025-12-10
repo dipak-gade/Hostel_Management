@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.service.PaymentService;
+import com.example.demo.serviceImpl.PaymentServiceImpl;
 import com.razorpay.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class PaymentController {
 
 	@Autowired
-	private PaymentService paymentService;
+	private PaymentServiceImpl paymentService;
 
 	@PostMapping("/create-order")
 	public String createOrder(@RequestBody OrderRequest request) throws Exception {

@@ -1,8 +1,8 @@
 package com.example.demo.service;
 
-import com.example.demo.dto.BreakupDTO;
+import com.example.demo.dto.BreakupDto;
 
 public interface BreakUpService {
 
-	public BreakupDTO getBreakup(String userName, Integer bedId, int duration);
+	public BreakupDto getBreakup(String userName, Integer bedId, int duration);
 }

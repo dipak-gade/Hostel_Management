@@ -1,28 +1,29 @@
-package com.example.demo.service;
+package com.example.demo.serviceImpl;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.demo.dto.FloorDTO;
+import com.example.demo.dto.FloorDto;
 import com.example.demo.entity.Building;
 import com.example.demo.entity.Floor;
-import com.example.demo.repository.BuildingRepo;
-import com.example.demo.repository.FloorRepo;
-import com.example.demo.repository.RoomRepo;
+import com.example.demo.repository.BuildingRepository;
+import com.example.demo.repository.FloorRepository;
+import com.example.demo.repository.RoomRepository;
+import com.example.demo.service.FloorService;
 
 @Service
 public class FloorServiceImpl implements FloorService {
 
 	@Autowired
-	FloorRepo floorRepo;
+	FloorRepository floorRepository;
 
 	@Autowired
-	RoomRepo roomRepo;
+	RoomRepository roomRepository;
 
 	@Autowired
-	BuildingRepo buildingRepo;
+	BuildingRepository buildingRepository;
 
 //	@Override
 //	public void addFloor(int fId, FloorDTO floorDTO) {
@@ -36,24 +37,24 @@ public class FloorServiceImpl implements FloorService {
 //
 //	}
 
-	public void addFloorWithBuildingId(FloorDTO floorDTO) {
-		Building building = buildingRepo.findById(floorDTO.getBuildingId()).get();
+	public void addFloorWithBuildingId(FloorDto floorDto) {
+		Building building = buildingRepository.findById(floorDto.getBuildingId()).get();
 
 		Floor floor = new Floor();
-		floor.setFloorNo(floorDTO.getFloorNo());
-		floor.setNoOfRooms(floorDTO.getNoOfRooms());
+		floor.setFloorNo(floorDto.getFloorNo());
+		floor.setNoOfRooms(floorDto.getNoOfRooms());
 
 		
 
 		floor.setBuilding(building);
-		floorRepo.save(floor);
+		floorRepository.save(floor);
 		building.setFloors(building.getFloors() + 1);
 
 	}
 
 	@Override
 	public List<Floor> getAllFloors() {
-		return floorRepo.findAll();
+		return floorRepository.findAll();
 
 	}
 }

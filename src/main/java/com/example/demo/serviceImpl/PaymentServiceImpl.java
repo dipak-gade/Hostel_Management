@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.serviceImpl;
 
 import com.razorpay.Order;
 import com.razorpay.RazorpayClient;
@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
-public class PaymentService {
+public class PaymentServiceImpl {
 
     @Value("${razorpay.key_id}")
     private String keyId;

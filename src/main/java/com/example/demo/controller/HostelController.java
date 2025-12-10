@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.dto.HostelDTO;
+import com.example.demo.dto.HostelDto;
 import com.example.demo.entity.Hostel;
 import com.example.demo.service.HostelService;
 
@@ -21,21 +21,10 @@ public class HostelController {
 	@Autowired
 	HostelService hostelService;
 
-//	@PostMapping("buildings/{hId}")
-//	public ResponseEntity addBuildingsInHostel(@PathVariable int hId, @RequestBody HostelDTO hostelDTO) {
-//		hostelService.addBuildingsInHostel(hId, hostelDTO);
-//		return new ResponseEntity("Buildings added in hostel", HttpStatus.CREATED);
-//	}
-
-	@PostMapping("addHostel")
-	public ResponseEntity addHostel(@RequestBody Hostel hostel) {
-		hostelService.addHostel(hostel);
-		return new ResponseEntity("Hostel Added", HttpStatus.CREATED);
-	}
-
-	@GetMapping("getAllHostels")
-	public List<Hostel> getAllHostels() {
-		return hostelService.getAllHostels();
+	@PostMapping("addHostelWithOrgId")
+	public ResponseEntity addHostelWithOrgId(@RequestBody HostelDto hostelDto) {
+		hostelService.addHostelWithOrgId(hostelDto);
+		return new ResponseEntity("Hostel added", HttpStatus.CREATED);
 	}
 
 	@GetMapping("getHostelById/{id}")
@@ -43,10 +32,9 @@ public class HostelController {
 		return hostelService.getHostelById(id);
 	}
 
-	@PostMapping("addHostelWithOrgId")
-	public ResponseEntity addHostelWithOrgId(@RequestBody HostelDTO hostelDTO) {
-		hostelService.addHostelWithOrgId(hostelDTO);
-		return new ResponseEntity("Hostel added", HttpStatus.CREATED);
+	@GetMapping("getAllHostels")
+	public List<Hostel> getAllHostels() {
+		return hostelService.getAllHostels();
 	}
 
 	@GetMapping("getHostelsByOrgId/{oId}")
@@ -55,4 +43,16 @@ public class HostelController {
 		return hostelService.getHostelsByOrgId(oId);
 
 	}
+
+//	@PostMapping("buildings/{hId}")
+//	public ResponseEntity addBuildingsInHostel(@PathVariable int hId, @RequestBody HostelDTO hostelDTO) {
+//		hostelService.addBuildingsInHostel(hId, hostelDTO);
+//		return new ResponseEntity("Buildings added in hostel", HttpStatus.CREATED);
+//	}
+
+//	@PostMapping("addHostel")
+//	public ResponseEntity addHostel(@RequestBody Hostel hostel) {
+//		hostelService.addHostel(hostel);
+//		return new ResponseEntity("Hostel Added", HttpStatus.CREATED);
+//	}
 }

@@ -1,4 +1,4 @@
-package com.example.demo.service;
+package com.example.demo.serviceImpl;
 
 import java.time.LocalDateTime;
 
@@ -8,27 +8,28 @@ import org.springframework.stereotype.Service;
 import com.example.demo.entity.Bed;
 import com.example.demo.entity.Booking;
 import com.example.demo.entity.User;
-import com.example.demo.repository.BedRepo;
-import com.example.demo.repository.BookingRepo;
-import com.example.demo.repository.UserRepo;
+import com.example.demo.repository.BedRepository;
+import com.example.demo.repository.BookingRepository;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.BookingService;
 
 @Service
 public class BookingServiceImpl implements BookingService {
 
 	@Autowired
-	BookingRepo bookingRepo;
+	BookingRepository bookingRepository;
 
 	@Autowired
-	BedRepo bedRepo;
+	BedRepository bedRepository;
 
 	@Autowired
-	UserRepo userRepo;
+	UserRepository userRepository;
 
 	@Override
 	public Booking createBooking(int userId, int bedId, int finalAmt) {
 		try {
-			Bed bed = bedRepo.findById(bedId).orElseThrow(() -> new RuntimeException("Bed not found: " + bedId));
-			User user = userRepo.findById(userId).orElseThrow(() -> new RuntimeException("User not found: " + userId));
+			Bed bed = bedRepository.findById(bedId).orElseThrow(() -> new RuntimeException("Bed not found: " + bedId));
+			User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found: " + userId));
 
 			Booking booking = new Booking();
 			booking.setUserId(user.getId());
@@ -39,7 +40,7 @@ public class BookingServiceImpl implements BookingService {
 			booking.setBookingStatus("IN_PROGRESS");
 			booking.setPaymentStatus("PENDING");
 
-			return bookingRepo.save(booking);
+			return bookingRepository.save(booking);
 
 		} catch (Exception e) {
 			e.printStackTrace(); // <-- SHOW THE REAL ERROR
@@ -50,7 +51,7 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public void updateBooking(int bookingId, String transactionId, boolean success, String orderId) {
 
-		Booking booking = bookingRepo.findById(bookingId).orElseThrow();
+		Booking booking = bookingRepository.findById(bookingId).orElseThrow();
 
 		booking.setOrderId(orderId);
 		booking.setTransactionId(transactionId);
@@ -62,21 +63,21 @@ public class BookingServiceImpl implements BookingService {
 			booking.setPaymentStatus("COMPLETED");
 
 			// Assign bed to user
-			Bed bed = bedRepo.findById(booking.getBedId()).orElseThrow();
-			User user = userRepo.findById(booking.getUserId()).orElseThrow();
+			Bed bed = bedRepository.findById(booking.getBedId()).orElseThrow();
+			User user = userRepository.findById(booking.getUserId()).orElseThrow();
 
 			user.setBed(bed);
-			userRepo.save(user);
+			userRepository.save(user);
 
 			// Mark bed as occupied
 			bed.setStatus("Occupied");
-			bedRepo.save(bed);
+			bedRepository.save(bed);
 
 		} else {
 			booking.setBookingStatus("FAILED");
 			booking.setPaymentStatus("FAILED");
 		}
 
-		bookingRepo.save(booking);
+		bookingRepository.save(booking);
 	}
 }

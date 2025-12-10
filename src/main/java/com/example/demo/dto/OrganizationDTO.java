@@ -1,56 +1,18 @@
 package com.example.demo.dto;
 
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import com.example.demo.entity.Hostel;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrganizationDto {
 
-public class OrganizationDTO {
-
+	private int id;
 	private String name;
 	private String email;
 	private String ownerName;
 	private String contact;
-
-	private Set<Hostel> hostels;
-
-	public String getContact() {
-		return contact;
-	}
-
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
-
-	public String getOwnerName() {
-		return ownerName;
-	}
-
-	public void setOwnerName(String ownerName) {
-		this.ownerName = ownerName;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Set<Hostel> getHostels() {
-		return hostels;
-	}
-
-	public void setHostels(Set<Hostel> hostels) {
-		this.hostels = hostels;
-	}
 
 }

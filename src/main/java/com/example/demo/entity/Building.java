@@ -12,8 +12,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Building {
 
 	@Id
@@ -32,53 +38,5 @@ public class Building {
 	@OneToMany(mappedBy = "building")
 	@JsonIgnore
 	private List<Floor> floorss;
-
-	public List<Floor> getFloorss() {
-		return floorss;
-	}
-
-	public void setFloorss(List<Floor> floorss) {
-		this.floorss = floorss;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public int getFloors() {
-		return floors;
-	}
-
-	public void setFloors(int floors) {
-		this.floors = floors;
-	}
-
-	public String getWarden() {
-		return warden;
-	}
-
-	public void setWarden(String warden) {
-		this.warden = warden;
-	}
-
-	public Hostel getHostel() {
-		return hostel;
-	}
-
-	public void setHostel(Hostel hostel) {
-		this.hostel = hostel;
-	}
 
 }

@@ -8,9 +8,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 //@Data // We dont need to add manually getters,setters,toStrings,equal,HahsCode methods
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class Organization {
 
 	@Id
@@ -27,51 +33,4 @@ public class Organization {
 	@JsonIgnore
 	private Set<Hostel> hostels;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public Set<Hostel> getHostels() {
-		return hostels;
-	}
-
-	public void setHostels(Set<Hostel> hostels) {
-		this.hostels = hostels;
-	}
-
-	public String getContact() {
-		return contact;
-	}
-
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
-
-	public String getOwnerName() {
-		return ownerName;
-	}
-
-	public void setOwnerName(String ownerName) {
-		this.ownerName = ownerName;
-	}
 }

@@ -16,12 +16,6 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-//	@PostMapping("addStudentWithBedId/{bedId}")
-//	public ResponseEntity addStudentWithBedId(@PathVariable int bedId, @RequestBody StudentDTO studentDTO) {
-//		studentService.addStudentWithBedId(bedId, studentDTO);
-//		return new ResponseEntity("Student Added", HttpStatus.CREATED);
-//	}
-
 	@PostMapping("addUserWithoutBedId")
 	public ResponseEntity addUser(@RequestBody User user) {
 		userService.addUser(user);
