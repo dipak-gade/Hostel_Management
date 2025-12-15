@@ -1,7 +1,10 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,5 +41,11 @@ public class BookingController {
 			return ResponseEntity.status(500).body("Failed to update booking");
 		}
 	}
+
+	@GetMapping("/bookings/org/{orgId}")
+	public List<Booking> getBookingsByOrg(@PathVariable int orgId) {
+	    return bookingService.getBookingsByOrgId(orgId);
+	}
+
 
 }

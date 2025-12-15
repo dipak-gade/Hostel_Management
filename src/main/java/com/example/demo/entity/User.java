@@ -29,6 +29,12 @@ public class User {
 	private String email;
 	private String course;
 	private int age;
+	
+	
+	private String username;
+	private String password;
+	private int OrgId;
+	private String role;
 
 	@OneToOne(cascade = CascadeType.ALL)
 	@JsonIgnore

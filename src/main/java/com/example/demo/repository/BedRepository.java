@@ -12,6 +12,8 @@ public interface BedRepository extends JpaRepository<Bed, Integer> {
 	
 	//JPQL Query
 	@Query("SELECT b FROM Bed b WHERE b.status = 'Available' AND b.room.sharing = :sharing AND b.room.floor.building.hostel.id = :hostelId")
-	List<Bed> findAvailableBedsOfTwoSharing(@Param("sharing") int sharing, @Param("hostelId") int hostelId);
+	List<Bed> findAvailableBedsOfRoomSharing(@Param("sharing") int sharing, @Param("hostelId") int hostelId);
 
+	
+	List<Bed> findByRoom_Id(int roomId);
 }

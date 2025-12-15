@@ -11,6 +11,7 @@ public class HostelDto {
 
 	private int orgId;
 
+	private int id;
 	private String name;
 	private String address;
 	private int capacity;

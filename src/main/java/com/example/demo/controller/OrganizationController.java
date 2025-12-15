@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.dto.OrganizationDto;
-import com.example.demo.entity.Organization;
 import com.example.demo.service.OrganizationService;
 
 @RestController
@@ -24,9 +23,9 @@ public class OrganizationController {
 	OrganizationService organizationService;
 
 	@PostMapping("addOrganization")
-	public ResponseEntity addOrganization(@RequestBody OrganizationDto organizationDto) {
+	public ResponseEntity<String> addOrganization(@RequestBody OrganizationDto organizationDto) {
 		organizationService.addOrganization(organizationDto);
-		return new ResponseEntity("Organization Added", HttpStatus.CREATED);
+		return new ResponseEntity<String>("Organization Added", HttpStatus.CREATED);
 	}
 
 	@GetMapping("getOrganizationById/{id}")
@@ -40,20 +39,16 @@ public class OrganizationController {
 	}
 
 	@DeleteMapping("deleteOrganizationById/{id}")
-	public ResponseEntity deleteOrganizationById(@PathVariable int id) {
+	public ResponseEntity<String> deleteOrganizationById(@PathVariable int id) {
 		organizationService.deleteOrganizationById(id);
-		return new ResponseEntity("Organization deleted", HttpStatus.OK);
+		return new ResponseEntity<String>("Organization deleted", HttpStatus.OK);
 	}
 
 	@PutMapping("updateOrganizationById/{id}")
-	public ResponseEntity updateOrganizationById(@PathVariable int id, @RequestBody OrganizationDto organizationDto) {
+	public ResponseEntity<String> updateOrganizationById(@PathVariable int id,
+			@RequestBody OrganizationDto organizationDto) {
 		organizationService.updateOrganizationById(id, organizationDto);
-		return new ResponseEntity("Organization updated", HttpStatus.OK);
+		return new ResponseEntity<String>("Organization updated", HttpStatus.OK);
 	}
 
-//	@PostMapping("addhostelsWithOrg")
-//	public ResponseEntity addHostelsInOrganozation(@RequestBody OrganizationDto organizationDto) {
-//		organizationService.addHostelsInOrganozation(organizationDto);
-//		return new ResponseEntity("Organization Added", HttpStatus.CREATED);
-//	}
 }

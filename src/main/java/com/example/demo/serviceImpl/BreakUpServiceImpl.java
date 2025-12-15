@@ -4,112 +4,79 @@ package com.example.demo.serviceImpl;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.constant.ErrorConstant;
 import com.example.demo.dto.BreakupDto;
 import com.example.demo.entity.Bed;
+import com.example.demo.exception.BreakupServiceException;
 import com.example.demo.repository.BedRepository;
 import com.example.demo.service.BreakUpService;
 
 @Service
 public class BreakUpServiceImpl implements BreakUpService {
 
-    @Autowired
-    BedRepository bedRepository;
+	@Autowired
+	BedRepository bedRepository;
 
-    @Override
-    public BreakupDto getBreakup(String userName, Integer bedId, int duration) {
-        // Check if bed exists
-        Optional<Bed> bedOptional = bedRepository.findById(bedId);
-        if (!bedOptional.isPresent()) {
-            throw new RuntimeException("Bed not found with ID: " + bedId);
-        }
-        
-        Bed bed = bedOptional.get();
+	@Override
+	public BreakupDto getBreakup(String userName, Integer bedId, int duration) {
 
-        BreakupDto breakupDto = new BreakupDto();
-        breakupDto.setUserName(userName);
-        breakupDto.setDuration(duration);
-        breakupDto.setBedId(bed.getId());
-        breakupDto.setBedPrice(bed.getPrice());
+		if (bedId == null || bedId <= 0) {
+			throw new BreakupServiceException(ErrorConstant.INVALID_ID, HttpStatus.BAD_REQUEST);
+		}
 
-        // Add null checks for all relationships
-        if (bed.getRoom() == null) {
-            throw new RuntimeException("Room not found for bed ID: " + bedId);
-        }
-        
-        breakupDto.setRoomNo(bed.getRoom().getRoomNo());
-        breakupDto.setSharing(bed.getRoom().getSharing());
-        breakupDto.setRoomType(bed.getRoom().getType());
+		if (duration <= 0) {
+			throw new BreakupServiceException(ErrorConstant.INVALID_ID, HttpStatus.BAD_REQUEST);
+		}
 
-        if (bed.getRoom().getFloor() == null) {
-            throw new RuntimeException("Floor not found for room");
-        }
-        
-        breakupDto.setFloorNo(bed.getRoom().getFloor().getFloorNo());
+		Optional<Bed> bedOptional = bedRepository.findById(bedId);
 
-        if (bed.getRoom().getFloor().getBuilding() == null) {
-            throw new RuntimeException("Building not found for floor");
-        }
+		if (bedOptional.isEmpty()) {
+			throw new BreakupServiceException(ErrorConstant.BED_NOT_FOUND, HttpStatus.NOT_FOUND);
+		}
 
-        if (bed.getRoom().getFloor().getBuilding().getHostel() == null) {
-            throw new RuntimeException("Hostel not found for building");
-        }
-        
-        breakupDto.setHostelName(bed.getRoom().getFloor().getBuilding().getHostel().getName());
-        breakupDto.setHostelAdd(bed.getRoom().getFloor().getBuilding().getHostel().getAddress());
+		Bed bed = bedOptional.get();
 
-        if (bed.getRoom().getFloor().getBuilding().getHostel().getOrganization() == null) {
-            throw new RuntimeException("Organization not found for hostel");
-        }
-        
-        breakupDto.setOrgName(bed.getRoom().getFloor().getBuilding().getHostel().getOrganization().getName());
+		if (bed.getRoom() == null) {
+			throw new BreakupServiceException(ErrorConstant.ROOM_NOT_FOUND, HttpStatus.NOT_FOUND);
+		}
 
-        int finalPrice = bed.getPrice() * duration;
-        breakupDto.setFinalPrice(finalPrice);
+		if (bed.getRoom().getFloor() == null) {
+			throw new BreakupServiceException(ErrorConstant.FLOOR_NOT_FOUND, HttpStatus.NOT_FOUND);
+		}
 
-        return breakupDto;
-    }
+		if (bed.getRoom().getFloor().getBuilding() == null) {
+			throw new BreakupServiceException(ErrorConstant.BUILDING_NOT_FOUND, HttpStatus.NOT_FOUND);
+		}
+
+		if (bed.getRoom().getFloor().getBuilding().getHostel() == null) {
+			throw new BreakupServiceException(ErrorConstant.HOSTEL_NOT_FOUND, HttpStatus.NOT_FOUND);
+		}
+
+		if (bed.getRoom().getFloor().getBuilding().getHostel().getOrganization() == null) {
+			throw new BreakupServiceException(ErrorConstant.ORGANIZATION_NOT_FOUND, HttpStatus.NOT_FOUND);
+		}
+
+		BreakupDto breakupDto = new BreakupDto();
+		breakupDto.setUserName(userName);
+		breakupDto.setDuration(duration);
+		breakupDto.setBedId(bed.getId());
+		breakupDto.setBedPrice(bed.getPrice());
+
+		breakupDto.setRoomNo(bed.getRoom().getRoomNo());
+		breakupDto.setSharing(bed.getRoom().getSharing());
+		breakupDto.setRoomType(bed.getRoom().getType());
+		breakupDto.setFloorNo(bed.getRoom().getFloor().getFloorNo());
+
+		breakupDto.setHostelName(bed.getRoom().getFloor().getBuilding().getHostel().getName());
+		breakupDto.setHostelAdd(bed.getRoom().getFloor().getBuilding().getHostel().getAddress());
+
+		breakupDto.setOrgName(bed.getRoom().getFloor().getBuilding().getHostel().getOrganization().getName());
+
+		breakupDto.setFinalPrice(bed.getPrice() * duration);
+
+		return breakupDto;
+	}
 }
-//package com.example.demo.service;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.stereotype.Service;
-//
-//import com.example.demo.dto.BreakupDTO;
-//import com.example.demo.entity.Bed;
-//import com.example.demo.repository.BedRepo;
-//
-//@Service
-//public class BreakUpServiceImpl implements BreakUpService {
-//
-//	@Autowired
-//	BedRepo bedRepo;
-//
-//	@Override
-//	public BreakupDTO getBreakup(String userName, Integer bedId, int duration) {
-//		Bed bed = bedRepo.findById(bedId).get();
-//
-//		BreakupDTO breakupDTO = new BreakupDTO();
-//		breakupDTO.setUserName(userName);
-//		breakupDTO.setDuration(duration);
-//
-//		breakupDTO.setBedId(bed.getId());
-//		breakupDTO.setBedPrice(bed.getPrice());
-//
-//		breakupDTO.setHostelName(bed.getRoom().getFloor().getBuilding().getHostel().getName());
-//		breakupDTO.setHostelAdd(bed.getRoom().getFloor().getBuilding().getHostel().getAddress());
-//		breakupDTO.setRoomType(bed.getRoom().getType());
-//		breakupDTO.setOrgName(bed.getRoom().getFloor().getBuilding().getHostel().getOrganization().getName());
-//		breakupDTO.setFloorNo(bed.getRoom().getFloor().getFloorNo());
-//		breakupDTO.setRoomNo(bed.getRoom().getRoomNo());
-//		breakupDTO.setSharing(bed.getRoom().getSharing());
-//
-//		int finalPrice = bed.getPrice() * duration;
-//
-//		breakupDTO.setFinalPrice(finalPrice);
-//
-//		return breakupDTO;
-//	}
-//
-//}

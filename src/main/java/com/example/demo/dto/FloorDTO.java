@@ -11,6 +11,7 @@ public class FloorDto {
 
 	private int buildingId;
 
+	private int id;
 	private int floorNo;
 	private int noOfRooms;
 

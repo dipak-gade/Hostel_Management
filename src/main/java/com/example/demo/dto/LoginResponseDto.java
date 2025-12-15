@@ -7,13 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BuildingDto {
-
-	private int hostelId;
-
-	private int id;
-	private String name;
-	private int floors;
-	private String warden;
+public class LoginResponseDto {
+    private int userId;
+    private String username;
+    private String role;
+    private Integer orgId;
 
 }

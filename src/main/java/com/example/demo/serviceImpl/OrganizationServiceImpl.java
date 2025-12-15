@@ -107,13 +107,13 @@ public class OrganizationServiceImpl implements OrganizationService {
 		if (id <= 0) {
 			throw new OrganizationServiceException(ErrorConstant.ID_NOT_FOUND, HttpStatus.BAD_REQUEST);
 		}
-		Optional<Organization> optionalOrganization = organizationRepository.findById(id);
+		Optional<Organization> organizationOptional = organizationRepository.findById(id);
 
-		if (optionalOrganization.isEmpty()) {
+		if (organizationOptional.isEmpty()) {
 			throw new OrganizationServiceException(ErrorConstant.ORGANIZATION_NOT_FOUND, HttpStatus.NOT_FOUND);
 		}
 
-		Organization organization = optionalOrganization.get();
+		Organization organization = organizationOptional.get();
 
 		organizationRepository.delete(organization);
 	}

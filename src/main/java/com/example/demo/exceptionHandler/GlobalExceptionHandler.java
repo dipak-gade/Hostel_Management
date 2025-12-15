@@ -10,6 +10,11 @@ import com.example.demo.exception.*;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+	@ExceptionHandler(AuthServiceException.class)
+	public ResponseEntity<String> handleAuthException(AuthServiceException ex) {
+		return new ResponseEntity<>(ex.getMessage(),ex.getHttpStatus());
+	}
+
 	@ExceptionHandler(OrganizationServiceException.class)
 	public ResponseEntity<String> handleOrganizationException(OrganizationServiceException ex) {
 		return new ResponseEntity<>(ex.getMessage(), ex.getHttpStatus());
@@ -65,5 +70,5 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> handleGlobalException(Exception ex) {
 		return new ResponseEntity<>("Something went wrong!", HttpStatus.INTERNAL_SERVER_ERROR);
-	} 
+	}
 }

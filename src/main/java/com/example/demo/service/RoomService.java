@@ -3,13 +3,15 @@ package com.example.demo.service;
 import java.util.List;
 
 import com.example.demo.dto.RoomDto;
-import com.example.demo.entity.Room;
 
 public interface RoomService {
 
 	public void addRoomWithFloorId(RoomDto roomDto);
 
-//	public void addRoomWithBeds(RoomDTO roomDTO);
+	public void createRoomWithBeds(RoomDto roomDTO);
 
-	public List<Room> getAllRooms();
+	public List<RoomDto> getAllRooms();
+
+	List<RoomDto> getRoomsByFloorId(int floorId);
+
 }
